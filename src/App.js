@@ -7,7 +7,6 @@ import { Route } from 'react-router-dom'
 import GameScreenContainer from './components/GameScreenContainer'
 import Register from './components/Register'
 
-
 class App extends Component {
   render() {
     return (

@@ -1,27 +1,32 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Login from './Login'
 import './Home.css'
-import { getGames } from '../actions/games'
+import { setGames } from '../actions/games'
 
 class Home extends React.Component {
+  source = new EventSource('https://wheel-of-fortune-server.herokuapp.com/stream')
 
   componentDidMount() {
-    this.props.getGames()
+    this.source.onmessage = this.props.setGames
   }
 
   render() {
-    const games = this.props.games
     return (
-      games ? <ul>{games.map(game => { return <li>{game.id} </li> })}</ul>
-        : <div className="home">
+      this.props.games.length ?
+        <div className="home">
+          <ul>
+            {Object
+              .values(this.props.games[0])
+              .map(game => <li key={game.id}>{game.id}</li>)}
+          </ul>
           <Login />
           <h1>Lobby</h1>
           <p>Click the links below to play the game and learn how the game works</p>
           <Link to="/tutorial">Learn to play</Link>
           <Link to="/game">Try your luck</Link>
-        </div>
+        </div> : <p>...loading</p>
     );
   }
 }
@@ -32,5 +37,5 @@ const mapStateToProps = (state) => {
   }
 }
 
-
-export default connect(mapStateToProps, { getGames })(Home);
+const mapDispatchToProps = { setGames }
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
