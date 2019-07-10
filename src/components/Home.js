@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import {Link} from 'react-router-dom';
 import './Home.css'
@@ -15,3 +16,17 @@ class Home extends React.Component {
 }
 
 export default Home;
+=======
+import React, { Component } from 'react'
+import {Link} from 'react-router-dom'
+
+export default class Home extends Component {
+  render() {
+    return (
+      <div>
+      <Link to='/game'>Try your luck</Link>
+      </div>
+    )
+  }
+}
+>>>>>>> origin/development

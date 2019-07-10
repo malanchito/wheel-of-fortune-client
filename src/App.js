@@ -4,6 +4,8 @@ import {Provider} from 'react-redux'
 import Home from './components/Home';
 import Tutorial from './components/Tutorial';
 import { Route } from 'react-router-dom'
+import GameScreenContainer from './components/GameScreenContainer'
+import Home from './components/Home'
 
 class App extends Component {
   render() {
@@ -16,6 +18,7 @@ class App extends Component {
           <main>
             <Route exact path="/" component={Home} />
             <Route exact path="/tutorial" component={Tutorial} />
+            <Route path= '/game' component={GameScreenContainer} />
           </main>
         </div>
       </Provider>
