@@ -1,5 +1,7 @@
 import {combineReducers} from 'redux'
+import word from './word'
+import game from './game'
 
 export default combineReducers({
-  // your reducers will go here
+  word,game
 })
