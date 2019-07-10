@@ -5,7 +5,6 @@ import Home from './components/Home';
 import Tutorial from './components/Tutorial';
 import { Route } from 'react-router-dom'
 import GameScreenContainer from './components/GameScreenContainer'
-import Home from './components/Home'
 
 class App extends Component {
   render() {
