@@ -2,13 +2,37 @@ import React from 'react'
 import {newGame,loadGame} from '../actions/game'
 import {checkWord,guessPuzzle,nextWord} from '../actions/word'
 import {connect} from 'react-redux'
+import { loadGame } from '../actions/game'
+import { checkWord } from '../actions/word'
+import { connect } from 'react-redux'
 import Game from './Game';
+import GameScreen from './GameScreen';
+import { saveWheelValue } from '../actions/wheel'
+
+
+
+const options = [
+  'Bankrupt',
+  '50$',
+  '100$',
+  '200$',
+  '500$',
+  '1000$',
+  '2000$',
+  'Skip Turn',
+  '1000000$'
+];
 
 class GameScreenContainer extends React.Component {
   state = {
     answer:''
   }
     
+
+   onComplete = (value) => {
+    this.props.saveWheelValue(value) 
+  };
+
   componentDidMount() {
     const player = "david"
     this.props.loadGame(6,player)
@@ -21,7 +45,7 @@ class GameScreenContainer extends React.Component {
     })
   }
 
-  onSubmit = (event) => {
+ onSubmit = (event) => {
     event.preventDefault()
     this.props.checkWord(
       this.props.word,
@@ -55,7 +79,6 @@ class GameScreenContainer extends React.Component {
     if(!this.props){
         return "loading game"
     }
-    console.log("turnito",this.props.turn)
     return <Game 
               word={this.props.word}
               guessed={this.props.guessed}
@@ -73,6 +96,11 @@ class GameScreenContainer extends React.Component {
               players={this.props.players}
               turn={this.props.turn}
               />
+            <GameScreen
+              options={options}
+              baseSize={200}
+              onComplete={this.onComplete}
+            />      
   }
 }
 
@@ -80,7 +108,7 @@ const mapStateToProps = state => ({
   word: state.game.word,
   guessed: state.game.guessed,
   clue: state.game.clue,
-  wheelValue: state.game.wheelValue,
+  wheelValue: state.wheel.wheelValue,
   gameId: state.game.gameId,
   puzzle: state.game.puzzle,
   category: state.game.category,
@@ -91,6 +119,6 @@ const mapStateToProps = state => ({
   turn: state.game.turn
 })
 
-const mapDispatchToProps = {newGame,checkWord,guessPuzzle,nextWord,loadGame}
+const mapDispatchToProps = {newGame,checkWord,guessPuzzle,nextWord,loadGame,saveWheelValue}
 
-export default connect(mapStateToProps,mapDispatchToProps)(GameScreenContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(GameScreenContainer)
