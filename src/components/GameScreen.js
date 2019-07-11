@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 
 import './GameScreen.css';
 
-
 class GameScreen extends React.Component {
   constructor(props) {
     super(props);
@@ -156,7 +155,7 @@ class GameScreen extends React.Component {
     const text = options[index]
     ctx.fillText(text, baseSize - ctx.measureText(text).width / 2, baseSize / 3);
     ctx.restore();
-    // this.props.onComplete(text);
+    this.props.onComplete(text);
   }
 
   easeOut(t, b, c, d) {
