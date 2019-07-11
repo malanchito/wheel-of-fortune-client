@@ -9,16 +9,15 @@ const playerCreated = player => ({
   player
 })
 
-export const createPlayer = () => (dispatch) => {
+export const createPlayer = (name) => (dispatch) => {
   const player = {
-    name: request.body.name,
-    password: request.body.password
+    name: name
   }
   request
-    .post(`${baseUrl}/players`)
-    .send(player)
+    .post(`${baseUrl}/players`, player)
+    // .send(player)
     .then(response => {
       dispatch(playerCreated(response.body))
     })
-    .cathc(console.error)
+    .catch(console.error)
 }

@@ -2,34 +2,21 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { createPlayer } from '../actions/player'
-import superagent from 'superagent'
 
 class Player extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      modalIsOpen: false
-    }
+  state = {
+    modalIsOpen: false,
+    name: ""
   }
 
   makePlayer = (e) => {
     e.preventDefault()
-    const newPlayer = this.state
-
     this.setState({
-      title: ""
+      name: ""
     })
-
-    superagent
-      .post(
-        'https://wheel-of-fortune-server.herokuapp.com/players'
-      )
-      .send(newPlayer)
-      .then(res => console.log('sumbitter', res))
-      .catch(console.error)
-    console.log('CREATE A NEW USER!!!')
-
+    this.props.createPlayer(this.state.name)
+    console.log('PLAYER CREATED ')
+    this.setState({ modalIsOpen: false });
   }
 
   openModal = () => {
@@ -44,8 +31,8 @@ class Player extends Component {
   }
 
   onChange = (e) => {
-    console.log('event', e.target.name)
     this.setState({ [e.target.name]: e.target.value })
+
   }
 
   render() {
@@ -63,10 +50,11 @@ class Player extends Component {
           <button onClick={this.closeModal}>close</button>
           <form action="">
             <input
+              name="name"
               type="text"
               placeholder="Player name"
-              name="player"
-              value={this.onChange} />
+              onChange={this.onChange}
+              value={this.name} />
             <br />
             <button onClick={this.makePlayer}>save</button>
           </form>
@@ -89,7 +77,8 @@ const customStyles = {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user
+    user: state.user,
+    player: state.player
   }
 }
 

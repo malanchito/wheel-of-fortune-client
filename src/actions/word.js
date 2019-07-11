@@ -23,31 +23,31 @@ export const loadWord = () => (dispatch) => {
     .catch(console.error)
 }
 
-export const checkWord = (word,letter,gameId,guessed,puzzle) => (dispatch) =>{
+export const checkWord = (word, letter, gameId, guessed, puzzle) => (dispatch) => {
   const containsLetter = word.split(letter)
   const wordArray = word.split("")
-  const remainingLetters=guessed.filter(character=>character!==letter)
-  const guessedLetters = puzzle.filter(character=>character!=='□')
-  if(containsLetter.length!==1){
+  const remainingLetters = guessed.filter(character => character !== letter)
+  const guessedLetters = puzzle.filter(character => character !== '□')
+  if (containsLetter.length !== 1) {
     guessedLetters.push(letter)
   }
-  const comparingPuzzle = wordArray.map(character=>guessedLetters.filter(char=>char===character))
-  const newPuzzle = comparingPuzzle.map(q=>{
-    if(q[0]===undefined){
+  const comparingPuzzle = wordArray.map(character => guessedLetters.filter(char => char === character))
+  const newPuzzle = comparingPuzzle.map(q => {
+    if (q[0] === undefined) {
       return '□'
-    }else{
+    } else {
       return q[0]
     }
-    })
+  })
   const data = {
     words: newPuzzle,
     guessed: remainingLetters
   }
-    request
-    .put(`${baseUrl}/game/${gameId}`,data)
+  request
+    .put(`${baseUrl}/game/${gameId}`, data)
     .then(response => {
       dispatch(gameUpdated(response.body))
     })
     .catch(console.error)
-  
+
 }
