@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-// import './Roulette.css';
+import './GameScreen.css';
 
 
 class GameScreen extends React.Component {
@@ -30,8 +30,8 @@ class GameScreen extends React.Component {
   };
 
   static defaultProps = {
-    options:  ['item1', 'item2', 'item3', 'item4', 'item5'],
-    baseSize: 275,
+    options:  ['Bankrupt', '50$', '100$', '200$', '500$', '1000$', '2000$'],
+    baseSize: 150,
     spinAngleStart: Math.random() * 10 + 10,
     spinTimeTotal: Math.random() * 3 + 4 * 1000,
   };
@@ -156,7 +156,7 @@ class GameScreen extends React.Component {
     const text = options[index]
     ctx.fillText(text, baseSize - ctx.measureText(text).width / 2, baseSize / 3);
     ctx.restore();
-    this.props.onComplete(text);
+    // this.props.onComplete(text);
   }
 
   easeOut(t, b, c, d) {
