@@ -1,53 +1,139 @@
 import request from 'superagent'
 
-export const WORD_FETCHED = 'WORD_FETCHED'
 export const GAME_UPDATED = 'GAME_UPDATED'
+export const PUZZLE_SOLVED = 'PUZZLE_SOLVED'
+export const NEXT_PUZZLE = 'NEXT_PUZZLE'
+export const LOSE_A_TURN = 'LOSE_A_TURN'
 
 const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
-
-const wordFetched = word => ({
-  type: WORD_FETCHED,
-  word
-})
 
 const gameUpdated = game => ({
   type: GAME_UPDATED,
   game
 })
 
-export const loadWord = () => (dispatch) => {
-  request(`${baseUrl}/category/9`)
-    .then(response => {
-      dispatch(wordFetched(response.body.words[0]))
-    })
-    .catch(console.error)
+const puzzleSolved = game => ({
+  type: PUZZLE_SOLVED,
+  game
+})
+
+const nextPuzzle = game => ({
+  type: NEXT_PUZZLE,
+  game
+})
+
+const loseATurn = game => ({
+  type: LOSE_A_TURN,
+  game
+})
+
+export const guessPuzzle = (answer,word,gameId) => (dispatch) => {
+  if(answer===word){
+    const solvedPuzzle = word.split("")
+    const data = {
+      words: solvedPuzzle,
+      guessed: []
+    }
+    request
+            .put(`${baseUrl}/game/${gameId}`,data)
+            .then(response => {dispatch(puzzleSolved(response.body))
+            })
+            .catch(console.error)
+    
+  }
 }
 
-export const checkWord = (word,letter,gameId,guessed,puzzle) => (dispatch) =>{
+export const nextWord = (gameId,category) => (dispatch) => {
+  request(`${baseUrl}/category/${category}`)
+      .then(response => {
+        const nextWord = {
+          words:[response.body.words[0].content,response.body.words[0].clue],
+          guessed:['b','c','d','f','g','h',
+                'j','k','l','m','n','p','q','r','s','t','v','w','x','y','z']
+        }
+        const deleteWord = {
+          content: response.body.words[0].content
+        }
+        request
+          .delete(`${baseUrl}/word`)
+          .send(deleteWord)
+          .then(response=>{
+            request
+            .put(`${baseUrl}/game/${gameId}`,nextWord)
+            .then(response => {dispatch(nextPuzzle(response.body))
+            })
+            .catch(console.error)
+          })
+          .catch(console.error)
+      })
+      .catch(console.error)
+}
+
+
+export const checkWord = (word,letter,gameId,guessed,puzzle,wheelValue,score,playerId) => (dispatch) =>{
   const containsLetter = word.split(letter)
   const wordArray = word.split("")
   const remainingLetters=guessed.filter(character=>character!==letter)
   const guessedLetters = puzzle.filter(character=>character!=='□')
+
   if(containsLetter.length!==1){
     guessedLetters.push(letter)
-  }
-  const comparingPuzzle = wordArray.map(character=>guessedLetters.filter(char=>char===character))
-  const newPuzzle = comparingPuzzle.map(q=>{
-    if(q[0]===undefined){
-      return '□'
-    }else{
-      return q[0]
+    const numberOfLetters=wordArray.filter(char=>char===letter)
+    const money=score+(numberOfLetters.length*wheelValue)
+    const comparingPuzzle = wordArray.map(character=>
+                                            guessedLetters.filter(char=>
+                                                                    char===character))
+                                                                    
+    const newPuzzle = comparingPuzzle.map(q=>{
+                                              if(q[0]===undefined){
+                                                return '□'
+                                              }else{
+                                                return q[0]
+                                              }
+      })
+    const updatedGame = {
+      words: newPuzzle,
+      guessed: remainingLetters,
     }
-    })
-  const data = {
-    words: newPuzzle,
-    guessed: remainingLetters
+    const newScore = {
+      score:money
+    }
+    const newData = {
+      words: newPuzzle,
+      guessed: remainingLetters,
+      score:money
+    }
+      request
+      .put(`${baseUrl}/game/${gameId}`,updatedGame)
+      .then(response => {
+        request
+        .put(`${baseUrl}/players/${playerId}`,newScore)
+        .then(response=>dispatch(gameUpdated(newData))
+          )      
+      })
+      .catch(console.error)
+   
+  }else{
+    const updatedGame = {
+      guessed: remainingLetters,
+    }
+    const turn = {
+      turn:0
+    }
+    const newData = {
+      guessed: remainingLetters,
+      turn:0
+    }
+      request
+      .put(`${baseUrl}/game/${gameId}`,updatedGame)
+      .then(response => {
+        request
+        .put(`${baseUrl}/players/${playerId}`,turn)
+        .then(response=>dispatch(loseATurn(newData))
+          )      
+      })
+      .catch(console.error)
   }
-    request
-    .put(`${baseUrl}/game/${gameId}`,data)
-    .then(response => {
-      dispatch(gameUpdated(response.body))
-    })
-    .catch(console.error)
+
   
 }
