@@ -9,14 +9,14 @@ const userCreated = user => ({
   user
 })
 
-export const createUser = () => (dispatch) => {
+export const createUser = (name, password) => (dispatch) => {
   const user = {
-    name: request.body.name,
-    password: request.body.password
+    name,
+    password
   }
-
+console.log('TRY AND CREATE AN USER')
   request
-    .post(`${baseUrl}/user`)
+    .post(`${baseUrl}/user`, user)
     .send(user)
     .then(response => {
       dispatch(userCreated(response.body))
