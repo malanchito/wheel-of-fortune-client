@@ -9,18 +9,16 @@ const wheelValueUpdated = wheelValue => ({
 
 const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
 
-export function saveWheelValue() {
+export const saveWheelValue = (dataValue) => (dispatch) =>  {
 
-    const dataValue = {
-        wheelValue:1234
-
+    const wheel = {
+        wheelValue:dataValue
     }
-    console.log('hello')
-    return (dispatch) => {
-        request.put(`${baseUrl}/game/:id`)
-            .send(dataValue)
+        
+        request.put(`${baseUrl}/game/1`,wheel)
             .then(response => {
                 dispatch(wheelValueUpdated(response.body))
             })
-    }
+            .catch(console.error)
+    
 }

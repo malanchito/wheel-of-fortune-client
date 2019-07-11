@@ -6,9 +6,7 @@ import Game from './Game';
 import GameScreen from './GameScreen';
 import { saveWheelValue } from '../actions/wheel'
 
-const handleOnComplete = (value) => {
-  console.log(value);
-};
+
 
 const options = [
   'Bankrupt',
@@ -17,10 +15,17 @@ const options = [
   '200$',
   '500$',
   '1000$',
-  '2000$'
+  '2000$',
+  'Skip Turn',
+  '1000000$'
 ];
 
 class GameScreenContainer extends React.Component {
+
+   onComplete = (value) => {
+    console.log(value,"letter v?") 
+    this.props.saveWheelValue(value) 
+  };
 
   componentDidMount() {
     this.props.loadGame(1)
@@ -39,9 +44,11 @@ class GameScreenContainer extends React.Component {
   }
 
   render() {
-    console.log("wheel fortune numer", this.props.wheelValue)
     if (!this.props) {
       return "loading game"
+    }
+    if(this.props.wheelValue){
+      console.log("wheel",this.props.wheelValue)
     }
     return <div>
       <Game
@@ -56,7 +63,7 @@ class GameScreenContainer extends React.Component {
       <GameScreen
         options={options}
         baseSize={200}
-        onComplete={handleOnComplete}
+        onComplete={this.onComplete}
       />
     </div>
   }
@@ -66,7 +73,7 @@ const mapStateToProps = state => ({
   word: state.game.word,
   guessed: state.game.guessed,
   clue: state.game.clue,
-  wheelValue: state.wheel,
+  wheelValue: state.wheel.wheelValue,
   gameId: state.game.gameId,
   puzzle: state.game.puzzle,
 })

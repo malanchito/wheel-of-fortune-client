@@ -6,11 +6,9 @@ const setWheelValue = (
 
                     switch(action.type){
                         case 'VALUE_UPDATED':
-                    return {
-                        ...state,
-                        ...action.payload
-                        
-                    }
+                            
+                    return action.wheelValue
+  
                     default:
                         return state
                     }
