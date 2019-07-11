@@ -10,8 +10,8 @@ export default class Login extends Component {
     this.state = {
       modalIsOpen: false
     }
-
   }
+  
   openModal = () => {
     this.setState({ modalIsOpen: true });
   }
