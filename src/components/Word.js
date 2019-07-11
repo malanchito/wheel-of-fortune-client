@@ -10,6 +10,7 @@ export default function Word(props) {
                 {props.guessed.map(letter =>
                 <button type="submit" value={letter} onClick={props.onSubmit}>{letter}</button>
                 )}
+                <p>You are <b>{props.currentPlayer}</b></p>
             </div>
 
             )

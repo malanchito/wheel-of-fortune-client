@@ -1,4 +1,7 @@
 import React from 'react'
+import {newGame,loadGame} from '../actions/game'
+import {checkWord,guessPuzzle,nextWord} from '../actions/word'
+import {connect} from 'react-redux'
 import { loadGame } from '../actions/game'
 import { checkWord } from '../actions/word'
 import { connect } from 'react-redux'
@@ -21,51 +24,83 @@ const options = [
 ];
 
 class GameScreenContainer extends React.Component {
+  state = {
+    answer:''
+  }
+    
 
    onComplete = (value) => {
-    console.log(value,"letter v?") 
     this.props.saveWheelValue(value) 
   };
 
   componentDidMount() {
-    this.props.loadGame(1)
+    const player = "david"
+    this.props.loadGame(6,player)
+    //this.props.newGame(1)
   }
 
-  onSubmit = (event) => {
+  onChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.value
+    })
+  }
+
+ onSubmit = (event) => {
     event.preventDefault()
-    console.log(event.target.value, "letter v?")
     this.props.checkWord(
       this.props.word,
       event.target.value,
       this.props.gameId,
       this.props.guessed,
-      this.props.puzzle
-    )
+      this.props.puzzle,
+      this.props.wheelValue,
+      this.props.score,
+      this.props.playerId
+      )
+  }
+
+  guessWord = (event) => {
+    event.preventDefault()
+    this.props.guessPuzzle(
+                this.state.answer,
+                this.props.word,
+                this.props.gameId)
+              
+    setTimeout(() => this.props.nextWord(
+                this.props.gameId,
+                this.props.category),
+              5000)
+    this.setState({
+      answer: '',
+  })
   }
 
   render() {
-    if (!this.props) {
-      return "loading game"
+    if(!this.props){
+        return "loading game"
     }
-    if(this.props.wheelValue){
-      console.log("wheel",this.props.wheelValue)
-    }
-    return <div>
-      <Game
-        word={this.props.word}
-        guessed={this.props.guessed}
-        clue={this.props.clue}
-        onSubmit={this.onSubmit}
-        wheelValue={this.props.wheelValue}
-        gameId={this.props.gameId}
-        puzzle={this.props.puzzle}
-      />
-      <GameScreen
-        options={options}
-        baseSize={200}
-        onComplete={this.onComplete}
-      />
-    </div>
+    return <Game 
+              word={this.props.word}
+              guessed={this.props.guessed}
+              clue={this.props.clue}
+              onSubmit={this.onSubmit}
+              onChange={this.onChange}
+              guessWord={this.guessWord}
+              wheelValue={this.props.wheelValue}
+              gameId={this.props.gameId}
+              puzzle={this.props.puzzle} 
+              values={this.state}
+              currentPlayer={this.props.currentPlayer}
+              playerId={this.props.playerId}
+              score={this.props.score}
+              players={this.props.players}
+              turn={this.props.turn}
+              />
+            <GameScreen
+              options={options}
+              baseSize={200}
+              onComplete={this.onComplete}
+            />      
   }
 }
 
@@ -76,8 +111,14 @@ const mapStateToProps = state => ({
   wheelValue: state.wheel.wheelValue,
   gameId: state.game.gameId,
   puzzle: state.game.puzzle,
+  category: state.game.category,
+  players: state.game.players,
+  currentPlayer: state.game.currentPlayer,
+  playerId: state.game.playerId,
+  score: state.game.score,
+  turn: state.game.turn
 })
 
-const mapDispatchToProps = { loadGame, checkWord, saveWheelValue }
+const mapDispatchToProps = {newGame,checkWord,guessPuzzle,nextWord,loadGame,saveWheelValue}
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreenContainer)
