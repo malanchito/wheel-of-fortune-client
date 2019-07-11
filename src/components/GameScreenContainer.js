@@ -4,6 +4,7 @@ import { checkWord } from '../actions/word'
 import { connect } from 'react-redux'
 import Game from './Game';
 import GameScreen from './GameScreen';
+import { saveWheelValue } from '../actions/wheel'
 
 const handleOnComplete = (value) => {
   console.log(value);
@@ -38,7 +39,7 @@ class GameScreenContainer extends React.Component {
   }
 
   render() {
-    console.log("game", this.props)
+    console.log("wheel fortune numer", this.props.wheelValue)
     if (!this.props) {
       return "loading game"
     }
@@ -65,11 +66,11 @@ const mapStateToProps = state => ({
   word: state.game.word,
   guessed: state.game.guessed,
   clue: state.game.clue,
-  wheelValue: state.game.wheelValue,
+  wheelValue: state.wheel,
   gameId: state.game.gameId,
-  puzzle: state.game.puzzle
+  puzzle: state.game.puzzle,
 })
 
-const mapDispatchToProps = { loadGame, checkWord }
+const mapDispatchToProps = { loadGame, checkWord, saveWheelValue }
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreenContainer)
