@@ -1,29 +1,33 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import Modal from 'react-modal'
+import { createUser } from '../actions/user'
 
-export default class Register extends Component {
+class Register extends Component {
   constructor() {
     super();
-
     this.state = {
       modalIsOpen: false
     }
-
   }
+
+  componentDidMount() {
+    this.props.createUSer()
+  }
+
   openModal = () => {
     this.setState({ modalIsOpen: true });
   }
+
   afterOpenModal = () => {
     // references are now sync'd and can be accessed.
     this.subtitle.style.color = '#f00';
   }
+
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   }
-  // toHome = (e) => {
-  //   e.preventDefault()
-  //   console.log('clicked')
-  // }
+
   render() {
     return (
       <div>
@@ -58,4 +62,13 @@ const customStyles = {
     marginRight: '-50%',
     transform: 'translate(-50%, -50%)'
   }
-};
+}
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDistatchToProps = { createUser }
+export default connect(mapStateToProps, mapDistatchToProps)(Register)
