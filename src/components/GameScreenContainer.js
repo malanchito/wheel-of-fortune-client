@@ -1,40 +1,40 @@
 import React from 'react'
-import {loadGame} from '../actions/game'
-import {checkWord} from '../actions/word'
-import {connect} from 'react-redux'
+import { loadGame } from '../actions/game'
+import { checkWord } from '../actions/word'
+import { connect } from 'react-redux'
 import Game from './Game';
 
 class GameScreenContainer extends React.Component {
-    
+
   componentDidMount() {
     this.props.loadGame(1)
   }
 
   onSubmit = (event) => {
     event.preventDefault()
-    console.log(event.target.value,"letter v?")
+    console.log(event.target.value, "letter v?")
     this.props.checkWord(
       this.props.word,
       event.target.value,
       this.props.gameId,
       this.props.guessed,
       this.props.puzzle
-      )
+    )
   }
 
   render() {
-    console.log("game",this.props)
-    if(!this.props){
-        return "loading game"
+    console.log("game", this.props)
+    if (!this.props) {
+      return "loading game"
     }
-    return <Game 
-              word={this.props.word}
-              guessed={this.props.guessed}
-              clue={this.props.clue}
-              onSubmit={this.onSubmit}
-              wheelValue={this.props.wheelValue}
-              gameId={this.props.gameId}
-              puzzle={this.props.puzzle} />
+    return <Game
+      word={this.props.word}
+      guessed={this.props.guessed}
+      clue={this.props.clue}
+      onSubmit={this.onSubmit}
+      wheelValue={this.props.wheelValue}
+      gameId={this.props.gameId}
+      puzzle={this.props.puzzle} />
   }
 }
 
@@ -47,6 +47,6 @@ const mapStateToProps = state => ({
   puzzle: state.game.puzzle
 })
 
-const mapDispatchToProps = {loadGame,checkWord}
+const mapDispatchToProps = { loadGame, checkWord }
 
-export default connect(mapStateToProps,mapDispatchToProps)(GameScreenContainer)
+export default connect(mapStateToProps, mapDispatchToProps)(GameScreenContainer)
