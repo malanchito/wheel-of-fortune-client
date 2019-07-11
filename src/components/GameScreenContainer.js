@@ -2,9 +2,6 @@ import React from 'react'
 import {newGame,loadGame} from '../actions/game'
 import {checkWord,guessPuzzle,nextWord} from '../actions/word'
 import {connect} from 'react-redux'
-import { loadGame } from '../actions/game'
-import { checkWord } from '../actions/word'
-import { connect } from 'react-redux'
 import Game from './Game';
 import GameScreen from './GameScreen';
 import { saveWheelValue } from '../actions/wheel'
@@ -79,7 +76,7 @@ class GameScreenContainer extends React.Component {
     if(!this.props){
         return "loading game"
     }
-    return <Game 
+    return <div><Game 
               word={this.props.word}
               guessed={this.props.guessed}
               clue={this.props.clue}
@@ -100,7 +97,9 @@ class GameScreenContainer extends React.Component {
               options={options}
               baseSize={200}
               onComplete={this.onComplete}
-            />      
+            /></div>
+              
+                
   }
 }
 
