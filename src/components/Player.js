@@ -77,13 +77,10 @@ const customStyles = {
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
     player: state.player
   }
 }
 
-const mapDispatchToProps = {
-  createPlayer
-}
+const mapDispatchToProps = { createPlayer }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Player)
