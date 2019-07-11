@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Login from './Login'
+import Player from './Player'
 import './Home.css'
 import { setGames } from '../actions/games'
 
@@ -22,6 +23,7 @@ class Home extends React.Component {
               .map(game => <li key={game.id}>{game.id}</li>)}
           </ul>
           <Login />
+          <Player />
           <h1>Lobby</h1>
           <p>Click the links below to play the game and learn how the game works</p>
           <Link to="/tutorial">Learn to play</Link>
@@ -38,4 +40,4 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = { setGames }
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home)

@@ -6,6 +6,7 @@ import Tutorial from './components/Tutorial';
 import { Route } from 'react-router-dom'
 import GameScreenContainer from './components/GameScreenContainer'
 import Register from './components/Register'
+import Player from './components/Player'
 
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
             <Route path="/tutorial" component={Tutorial} />
             <Route path='/register' component={Register} />
             <Route path='/game' component={GameScreenContainer} />
+            <Route path='/player' component={Player} />
           </main>
 
         </div>
