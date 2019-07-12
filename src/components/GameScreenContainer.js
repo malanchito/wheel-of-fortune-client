@@ -17,12 +17,6 @@ const options = [
   '1',
   '5',
   '10',
-  '100',
-  '50',
-  'Bankrupt',
-  '1',
-  '5',
-  '10',
   '200',
   'Bankrupt',
   '50',
@@ -49,7 +43,7 @@ class GameScreenContainer extends React.Component {
     const game = this.props.match.params.gameId
     const playerId = this.props.match.params.playerId
     //this.source.onmessage=event=>this.props.loadGames(event,game,playerId)
-    //this.props.newGame(2)
+    //this.props.newGame(4)
     this.props.loadGame(game,playerId)
   }
 

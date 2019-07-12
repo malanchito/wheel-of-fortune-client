@@ -15,7 +15,6 @@ export default function Game(props) {
     if(props.turn===0||(props.turn>=0&&props.wheelValue==='')){
         return (
             <div>
-                <h3>{props.word}</h3>
                 <i className="Clue">{props.clue}</i>
                 <h1 className="Guessed">{props.puzzle}</h1>
                 <p className="waiting">Spin the wheel first</p>
@@ -34,7 +33,6 @@ export default function Game(props) {
     }
         return (
             <div>
-                <h3>{props.word}</h3>
                 <i className="Clue">{props.clue}</i>
                 <h1 className="Guessed">{props.puzzle}</h1>
                 {props.guessed.map(letter =>
