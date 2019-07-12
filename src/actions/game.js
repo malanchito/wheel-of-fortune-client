@@ -4,6 +4,7 @@ export const GAME_FETCHED = 'GAME_FETCHED'
 export const LOAD_ALL_GAMES = 'LOAD_ALL_GAMES'
 
 const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
+// const baseUrl = 'http://localhost:5000'
 
 const gameFetched = (game,player) => ({
   type: GAME_FETCHED,

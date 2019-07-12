@@ -26,7 +26,6 @@ a:link, a:visited {
     ul, div {
       text-align: center;
       display: inline;
-      list-style-image: url('https://image.flaticon.com/icons/svg/884/884183.svg');
       list-style-position: inside;
       margin-left: 0;
       padding-left: 1em;

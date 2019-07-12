@@ -7,7 +7,8 @@ const wheelValueUpdated = wheelValue => ({
     wheelValue
   })
 
-const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
+// const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
+const baseUrl = 'http://localhost:5000'
 
 export const saveWheelValue = (dataValue) => (dispatch) =>  {
 

@@ -7,7 +7,8 @@ export const LOSE_A_TURN = 'LOSE_A_TURN'
 export const WRONG_ANSWER = 'WRONG_ANSWER'
 export const LOSE_EVERYTHING = 'LOSE_EVERYTHING'
 
-const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
+// const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
+const baseUrl = 'http://localhost:5000'
 
 const gameUpdated = game => ({
   type: GAME_UPDATED,

@@ -2,7 +2,8 @@ import request from 'superagent'
 
 export const USER_CREATED = 'USER_CREATED'
 
-const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
+// const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
+const baseUrl = 'http://localhost:5000'
 
 const userCreated = user => ({
   type: USER_CREATED,
