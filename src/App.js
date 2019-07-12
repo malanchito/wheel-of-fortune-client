@@ -7,6 +7,7 @@ import { Route } from 'react-router-dom'
 import GameScreenContainer from './components/GameScreenContainer'
 import Register from './components/Register'
 import Player from './components/Player'
+import ScoreboardContainer from './components/ScoreboardContainer'
 
 class App extends Component {
   render() {
@@ -22,8 +23,8 @@ class App extends Component {
             <Route path='/register' component={Register} />
             <Route path='/game/:gameId/:playerId' component={GameScreenContainer} />
             <Route path='/player' component={Player} />
+            <Route path='/scoreboard' component={ScoreboardContainer} />
           </main>
-
         </div>
       </Provider>
     );

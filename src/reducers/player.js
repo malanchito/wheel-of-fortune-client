@@ -1,4 +1,4 @@
-import { PLAYER_CREATED } from '../actions/player'
+import { PLAYER_CREATED, PLAYER_UPDATED } from '../actions/player'
 
 const player = (state = {}, action = {}) => {
   switch (action.type) {
@@ -6,6 +6,10 @@ const player = (state = {}, action = {}) => {
       return {
         ...action.player
       }
+      case PLAYER_UPDATED:
+        return {...state, 
+          ...action.player
+        }
     default:
       return state
   }
