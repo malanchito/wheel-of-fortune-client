@@ -49,6 +49,7 @@ class Home extends React.Component {
           <p>Click the links below to play the game and learn how the game works</p>
           <Link to="/tutorial">Learn to play</Link>
           <Link to="/game">Try your luck</Link>
+          <Link to="/scoreboard"> Scoreboard</Link>
         </div> : <p>...loading</p>
     );
   }
