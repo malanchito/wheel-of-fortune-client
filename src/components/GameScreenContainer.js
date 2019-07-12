@@ -86,11 +86,11 @@ class GameScreenContainer extends React.Component {
                 this.props.playerId,
                 this.props.turn
                 )
-    if(this.props.turn===1){
+    if(this.props.turn >= 0 ){
       setTimeout(() => this.props.nextWord(
         this.props.gameId,
         this.props.category),
-      5000)
+      2000)
     }          
     this.setState({
       answer: '',

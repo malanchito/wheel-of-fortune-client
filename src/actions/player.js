@@ -14,7 +14,7 @@ const playerCreated = player => ({
 export const createPlayer = (name) => (dispatch) => {
   const player = {
     name: name,
-    turn: 3
+    turn: 7
   }
   request
     .post(`${baseUrl}/players`, player)
