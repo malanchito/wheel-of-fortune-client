@@ -20,7 +20,7 @@ class App extends Component {
             <Route exact path="/" component={Home} />
             <Route path="/tutorial" component={Tutorial} />
             <Route path='/register' component={Register} />
-            <Route path='/game/' component={GameScreenContainer} />
+            <Route path='/game/:gameId/:playerId' component={GameScreenContainer} />
             <Route path='/player' component={Player} />
           </main>
 

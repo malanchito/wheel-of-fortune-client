@@ -18,6 +18,10 @@ const reducer = (
                 guessed: action.game.guessed,
                 turn: action.game.turn
             }
+        case 'WRONG_ANSWER':
+            return {...state,
+                turn: action.game.turn
+            }
         case 'GAME_UPDATED':
             return {...state,
                 guessed: action.game.guessed,

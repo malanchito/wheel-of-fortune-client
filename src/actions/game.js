@@ -13,8 +13,7 @@ const gameFetched = (game,player) => ({
 export function loadGames (event,gameId,player){
   const {data}=event
   const games=JSON.parse(data)
-  const game=games.find(game=>game.id===gameId)
-  console.log('messages test:',game)
+  const game=games.find(game=>game.id===parseInt(gameId))
   return {
       type: GAME_FETCHED,
       game,player

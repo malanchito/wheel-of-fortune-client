@@ -10,19 +10,20 @@ import { saveWheelValue } from '../actions/wheel'
 
 const options = [
   'Bankrupt',
-  '50$',
-  '100$',
-  '200$',
-  '500$',
-  '1000$',
-  '2000$',
-  'Skip Turn',
-  '1000000$'
+  '50',
+  '100',
+  '200',
+  '500',
+  '1000',
+  '2000',
+  'Lose a Turn',
+  '1000000'
 ];
 
 class GameScreenContainer extends React.Component {
   state = {
-    answer:''
+    answer:'',
+    wheel:''
   }
     
   url = 'https://wheel-of-fortune-server.herokuapp.com'
@@ -33,11 +34,10 @@ class GameScreenContainer extends React.Component {
   };
 
   componentDidMount() {
-    //this.source.onmessage=event=>this.props.loadGames(event,7,"david")
-    //const gameId = this.props.match.params.gameId
-    //const playerId = this.props.match.params.playerId
-    this.props.loadGame(7,"david")
-    //this.props.newGame(1)
+    const game = this.props.match.params.gameId
+    console.log("why are you not working",game)
+    const playerId = this.props.match.params.playerId
+    this.source.onmessage=event=>this.props.loadGames(event,game,playerId)
   }
 
   onChange = (event) => {
@@ -69,12 +69,12 @@ class GameScreenContainer extends React.Component {
                 this.props.gameId,
                 this.props.players,
                 this.props.playerId)
-    //if(this.props.turn===1){
-      //setTimeout(() => this.props.nextWord(
-        //this.props.gameId,
-        //this.props.category),
-      //5000)
-    //}          
+    if(this.props.turn===1){
+      setTimeout(() => this.props.nextWord(
+        this.props.gameId,
+        this.props.category),
+      5000)
+    }          
     this.setState({
       answer: '',
   })
