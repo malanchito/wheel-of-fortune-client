@@ -1,6 +1,7 @@
 import request from 'superagent'
 
 export const GAME_FETCHED = 'GAME_FETCHED'
+export const LOAD_ALL_GAMES = 'LOAD_ALL_GAMES'
 
 const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
 
@@ -8,6 +9,17 @@ const gameFetched = (game,player) => ({
   type: GAME_FETCHED,
   game,player
 })
+
+export function loadGames (event,gameId,player){
+  const {data}=event
+  const games=JSON.parse(data)
+  const game=games.find(game=>game.id===gameId)
+  console.log('messages test:',game)
+  return {
+      type: GAME_FETCHED,
+      game,player
+  }
+}
 
 export const loadGame = (id,player) => (dispatch) => {
   request(`${baseUrl}/game/${id}`)

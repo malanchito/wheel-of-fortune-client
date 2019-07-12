@@ -12,21 +12,20 @@ export default function Game(props) {
     }
 
     const otherPlayers = props.players.filter(player=>player.name!==props.currentPlayer)
-    if(props.turn===0){
+    if(props.turn===0||(props.turn===1&&props.wheelValue==='')){
         return (
             <div>
                 <h3>{props.word}</h3>
                 <i className="Clue">{props.clue}</i>
                 <h1 className="Guessed">{props.puzzle}</h1>
-                <p className="waiting">Waiting for the other player</p>
+                <p className="waiting">Waiting for the other player or to spin the wheel</p>
                 <p className="CurrentPlayer">You are <b>{props.currentPlayer}</b></p>
-                <p className="Score">Your score is <b>{props.score}</b></p>
+                <p className="Score">Your have <b>${props.score}</b></p>
+                <p className="Wheel">Wheel value is {props.wheelValue}</p>
                 <p className="Rivals"><b>Rivals</b></p>
-                <p className="Wheel">Wheel value is ${props.wheelValue}</p>
                 {otherPlayers.map(player=>
                 <ul key={player.name}>
-                    <li>{player.name}</li>
-                    <li>{player.score}</li>
+                    <li><b>{player.name}</b>: {player.score}</li>
                 </ul>
                     )}
             </div>
@@ -59,13 +58,12 @@ export default function Game(props) {
                     />
                 </form>
                 <p className="CurrentPlayer">You are <b>{props.currentPlayer}</b></p>
-                <p className="Score">Your score is <b>{props.score}</b></p>
-                <p className="Wheel">Wheel value is ${props.wheelValue}</p>
+                <p className="Score">Your have <b>${props.score}</b></p>
+                <p className="Wheel">Wheel value is {props.wheelValue}</p>
                 <p className="Rivals"><b>Rivals</b></p>
                 {otherPlayers.map(player=>
                 <ul key={player.name}>
-                    <li>{player.name}</li>
-                    <li>{player.score}</li>
+                    <li><b>{player.name}</b>: ${player.score}</li>
                 </ul>
                     )}
             </div>

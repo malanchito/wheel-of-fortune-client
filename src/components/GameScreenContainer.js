@@ -1,5 +1,5 @@
 import React from 'react'
-import {newGame,loadGame} from '../actions/game'
+import {newGame,loadGame,loadGames} from '../actions/game'
 import {checkWord,guessPuzzle,nextWord} from '../actions/word'
 import {connect} from 'react-redux'
 import Game from './Game';
@@ -25,14 +25,18 @@ class GameScreenContainer extends React.Component {
     answer:''
   }
     
+  url = 'https://wheel-of-fortune-server.herokuapp.com'
+  source = new EventSource(`${this.url}/stream`)
 
-   onComplete = (value) => {
+  onComplete = (value) => {
     this.props.saveWheelValue(value) 
   };
 
   componentDidMount() {
-    const player = "david"
-    this.props.loadGame(6,player)
+    //this.source.onmessage=event=>this.props.loadGames(event,7,"david")
+    //const gameId = this.props.match.params.gameId
+    //const playerId = this.props.match.params.playerId
+    this.props.loadGame(7,"david")
     //this.props.newGame(1)
   }
 
@@ -52,7 +56,8 @@ class GameScreenContainer extends React.Component {
       this.props.puzzle,
       this.props.wheelValue,
       this.props.score,
-      this.props.playerId
+      this.props.playerId,
+      this.props.players
       )
   }
 
@@ -61,12 +66,15 @@ class GameScreenContainer extends React.Component {
     this.props.guessPuzzle(
                 this.state.answer,
                 this.props.word,
-                this.props.gameId)
-              
-    setTimeout(() => this.props.nextWord(
                 this.props.gameId,
-                this.props.category),
-              5000)
+                this.props.players,
+                this.props.playerId)
+    //if(this.props.turn===1){
+      //setTimeout(() => this.props.nextWord(
+        //this.props.gameId,
+        //this.props.category),
+      //5000)
+    //}          
     this.setState({
       answer: '',
   })
@@ -76,7 +84,8 @@ class GameScreenContainer extends React.Component {
     if(!this.props){
         return "loading game"
     }
-    return <div><Game 
+    
+    return <div className="gameBoard"><Game 
               word={this.props.word}
               guessed={this.props.guessed}
               clue={this.props.clue}
@@ -118,6 +127,7 @@ const mapStateToProps = state => ({
   turn: state.game.turn
 })
 
-const mapDispatchToProps = {newGame,checkWord,guessPuzzle,nextWord,loadGame,saveWheelValue}
+const mapDispatchToProps = {newGame,checkWord,guessPuzzle,
+                            nextWord,loadGame,saveWheelValue,loadGames}
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreenContainer)

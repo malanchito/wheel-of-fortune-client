@@ -4,6 +4,7 @@ export const GAME_UPDATED = 'GAME_UPDATED'
 export const PUZZLE_SOLVED = 'PUZZLE_SOLVED'
 export const NEXT_PUZZLE = 'NEXT_PUZZLE'
 export const LOSE_A_TURN = 'LOSE_A_TURN'
+export const WRONG_ANSWER = 'WRONG_ANSWER'
 
 const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
 
@@ -27,7 +28,12 @@ const loseATurn = game => ({
   game
 })
 
-export const guessPuzzle = (answer,word,gameId) => (dispatch) => {
+const wrongAnswer = game => ({
+  type: WRONG_ANSWER,
+  game
+})
+
+export const guessPuzzle = (answer,word,gameId,players,playerId) => (dispatch) => {
   if(answer===word){
     const solvedPuzzle = word.split("")
     const data = {
@@ -40,6 +46,23 @@ export const guessPuzzle = (answer,word,gameId) => (dispatch) => {
             })
             .catch(console.error)
     
+  }else{
+    const turn = {
+      turn:0
+    }
+    const otherPlayer = players.find(player=>player.id!==playerId)
+    const turnNextPlayer = {
+      turn:1
+    }
+    request
+    .put(`${baseUrl}/players/${playerId}`,turn)
+    .then(response=>{
+      request
+      .put(`${baseUrl}/players/${otherPlayer.id}`,turnNextPlayer)
+      .then(response=>dispatch(wrongAnswer(turn)))
+      .catch(console.error) 
+    })   
+    .catch(console.error)    
   }
 }
 
@@ -70,7 +93,8 @@ export const nextWord = (gameId,category) => (dispatch) => {
 }
 
 
-export const checkWord = (word,letter,gameId,guessed,puzzle,wheelValue,score,playerId) => (dispatch) =>{
+export const checkWord = (word,letter,gameId,guessed,puzzle,
+                            wheelValue,score,playerId,players) => (dispatch) =>{
   const containsLetter = word.split(letter)
   const wordArray = word.split("")
   const remainingLetters=guessed.filter(character=>character!==letter)
@@ -120,6 +144,10 @@ export const checkWord = (word,letter,gameId,guessed,puzzle,wheelValue,score,pla
     const turn = {
       turn:0
     }
+    const otherPlayer = players.find(player=>player.id!==playerId)
+    const turnNextPlayer = {
+      turn:1
+    }
     const newData = {
       guessed: remainingLetters,
       turn:0
@@ -129,8 +157,13 @@ export const checkWord = (word,letter,gameId,guessed,puzzle,wheelValue,score,pla
       .then(response => {
         request
         .put(`${baseUrl}/players/${playerId}`,turn)
-        .then(response=>dispatch(loseATurn(newData))
-          )      
+        .then(response=>{
+          request
+          .put(`${baseUrl}/players/${otherPlayer.id}`,turnNextPlayer)
+          .then(response=>dispatch(loseATurn(newData)))
+          .catch(console.error) 
+        })   
+        .catch(console.error)    
       })
       .catch(console.error)
   }
