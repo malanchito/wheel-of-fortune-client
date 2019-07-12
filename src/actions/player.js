@@ -3,8 +3,8 @@ import request from 'superagent'
 export const PLAYER_CREATED = 'PLAYER_CREATED'
 export const PLAYER_UPDATED = 'PLAYER_UPDATED'
 
-// const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
-const baseUrl = 'http://localhost:5000'
+const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
+// const baseUrl = 'http://localhost:5000'
 
 const playerCreated = player => ({
   type: PLAYER_CREATED,
