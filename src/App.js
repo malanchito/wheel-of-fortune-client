@@ -23,7 +23,6 @@ class App extends Component {
             <Route path='/game/:gameId/:playerId' component={GameScreenContainer} />
             <Route path='/player' component={Player} />
           </main>
-
         </div>
       </Provider>
     );

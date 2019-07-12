@@ -1,28 +1,28 @@
 const reducer = (
-            state = {
-                word:"",
-                guessed:[],
-                clue:""
-            },
-            action = {}) => {
+    state = {
+        word: "",
+        guessed: [],
+        clue: ""
+    },
+    action = {}) => {
 
-    switch(action.type){
+    switch (action.type) {
         case 'WORD_FETCHED':
-            const guess=action.word.content.split("")
-            const hidden=guess.map(letter=>{
-                if(letter!==" "){
+            const guess = action.word.content.split("")
+            const hidden = guess.map(letter => {
+                if (letter !== " ") {
                     return "□"
-                }else{
+                } else {
                     return " "
                 }
             })
             return {
-                word:action.word.content,
-                guessed:hidden,
-                clue:action.word.clue
+                word: action.word.content,
+                guessed: hidden,
+                clue: action.word.clue
             }
         default:
             return state
     }
-  }
+}
 export default reducer
