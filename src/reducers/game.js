@@ -9,6 +9,10 @@ const reducer = (
     action = {}) => {
 
     switch(action.type){
+        case 'LOSE_EVERYTHING':
+            return {...state,
+                    score:action.game.score
+            }
         case 'LOAD_ALL_GAMES':
             return {...state,
                 games:action.payload
