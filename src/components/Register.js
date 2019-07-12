@@ -7,12 +7,22 @@ class Register extends Component {
   constructor() {
     super();
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      name: "",
+      password: ""
     }
   }
 
-  componentDidMount() {
-    this.props.createUSer()
+  makePlayer = (e) => {
+    e.preventDefault()
+    this.setState({
+      name: "",
+      password: ""
+    })
+    const user = this.state
+    this.props.createUser(user.name, user.password)
+    console.log('USER CREATED ')
+    this.setState({ modalIsOpen: false })
   }
 
   openModal = () => {
@@ -26,6 +36,10 @@ class Register extends Component {
 
   closeModal = () => {
     this.setState({ modalIsOpen: false });
+  }
+
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   render() {
@@ -42,10 +56,22 @@ class Register extends Component {
           <h2 ref={subtitle => this.subtitle = subtitle}>enter your credentials please</h2>
           <button onClick={this.closeModal}>close</button>
           <form action="">
-            <input type="text" placeholder="user name" name="user" />
+            <input
+              name="name"
+              type="text"
+              placeholder="Select a user name"
+              onChange={this.onChange}
+              value={this.name}
+            />
             <br />
-            <input type="text" placeholder="password" name="password" />
-            <button>Register</button>
+            <input
+              name="password"
+              type="text"
+              placeholder="Select your password"
+              onChange={this.onChange}
+              value={this.password}
+            />
+            <button onClick={this.makePlayer}>Register</button>
           </form>
         </Modal>
       </div>
@@ -71,4 +97,5 @@ const mapStateToProps = (state) => {
 }
 
 const mapDistatchToProps = { createUser }
+
 export default connect(mapStateToProps, mapDistatchToProps)(Register)
