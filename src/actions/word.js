@@ -6,7 +6,8 @@ export const NEXT_PUZZLE = 'NEXT_PUZZLE'
 export const LOSE_A_TURN = 'LOSE_A_TURN'
 export const WRONG_ANSWER = 'WRONG_ANSWER'
 
-const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
+// const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
+const baseUrl = 'http://localhost:5000'
 
 const gameUpdated = game => ({
   type: GAME_UPDATED,

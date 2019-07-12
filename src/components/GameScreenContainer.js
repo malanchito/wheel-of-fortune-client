@@ -26,7 +26,8 @@ class GameScreenContainer extends React.Component {
     wheel:''
   }
     
-  url = 'https://wheel-of-fortune-server.herokuapp.com'
+  // url = 'https://wheel-of-fortune-server.herokuapp.com'
+  url = 'http://localhost:5000'
   source = new EventSource(`${this.url}/stream`)
 
   onComplete = (value) => {
