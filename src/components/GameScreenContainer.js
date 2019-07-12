@@ -1,6 +1,6 @@
 import React from 'react'
 import {newGame,loadGame,loadGames} from '../actions/game'
-import {checkWord,guessPuzzle,nextWord} from '../actions/word'
+import {checkWord,guessPuzzle,nextWord,bankRupt} from '../actions/word'
 import {connect} from 'react-redux'
 import Game from './Game';
 import GameScreen from './GameScreen';
@@ -10,20 +10,32 @@ import { saveWheelValue } from '../actions/wheel'
 
 const options = [
   'Bankrupt',
-  '50',
   '100',
+  '300',
+  '10000000',
+  'Bankrupt',
+  '1',
+  '5',
+  '10',
+  '100',
+  '50',
+  'Bankrupt',
+  '1',
+  '5',
+  '10',
   '200',
-  '500',
-  '1000',
-  '2000',
-  'Lose a Turn',
-  '1000000'
+  'Bankrupt',
+  '50',
+  '1',
+  '5',
+  '10',
+  '50',
+  '300',
 ];
 
 class GameScreenContainer extends React.Component {
   state = {
-    answer:'',
-    wheel:''
+    answer:''
   }
     
   url = 'https://wheel-of-fortune-server.herokuapp.com'
@@ -35,9 +47,16 @@ class GameScreenContainer extends React.Component {
 
   componentDidMount() {
     const game = this.props.match.params.gameId
-    console.log("why are you not working",game)
     const playerId = this.props.match.params.playerId
-    this.source.onmessage=event=>this.props.loadGames(event,game,playerId)
+    //this.source.onmessage=event=>this.props.loadGames(event,game,playerId)
+    //this.props.newGame(2)
+    this.props.loadGame(game,playerId)
+  }
+
+  componentDidUpdate() {
+    if(this.props.wheelValue==="Bankrupt"){
+      this.props.bankRupt(this.props.players,this.props.playerId)
+    }
   }
 
   onChange = (event) => {
@@ -57,7 +76,8 @@ class GameScreenContainer extends React.Component {
       this.props.wheelValue,
       this.props.score,
       this.props.playerId,
-      this.props.players
+      this.props.players,
+      this.props.turn
       )
   }
 
@@ -68,7 +88,9 @@ class GameScreenContainer extends React.Component {
                 this.props.word,
                 this.props.gameId,
                 this.props.players,
-                this.props.playerId)
+                this.props.playerId,
+                this.props.turn
+                )
     if(this.props.turn===1){
       setTimeout(() => this.props.nextWord(
         this.props.gameId,
@@ -84,29 +106,39 @@ class GameScreenContainer extends React.Component {
     if(!this.props){
         return "loading game"
     }
+    const puzzle = <Game 
+    word={this.props.word}
+    guessed={this.props.guessed}
+    clue={this.props.clue}
+    onSubmit={this.onSubmit}
+    onChange={this.onChange}
+    guessWord={this.guessWord}
+    wheelValue={this.props.wheelValue}
+    gameId={this.props.gameId}
+    puzzle={this.props.puzzle} 
+    values={this.state}
+    currentPlayer={this.props.currentPlayer}
+    playerId={this.props.playerId}
+    score={this.props.score}
+    players={this.props.players}
+    turn={this.props.turn}
+    />
+    const wheel=<GameScreen
+    options={options}
+    baseSize={200}
+    onComplete={this.onComplete}
+  />
+  if(this.props.wheelValue===''||this.props.wheelValue==='Bankrupt'){
+    return <div className="gameBoard">
+      {puzzle}{wheel}
+            </div>
+  }else{
+    return <div className="gameBoard">
+      {puzzle}
+            </div>
+  }
     
-    return <div className="gameBoard"><Game 
-              word={this.props.word}
-              guessed={this.props.guessed}
-              clue={this.props.clue}
-              onSubmit={this.onSubmit}
-              onChange={this.onChange}
-              guessWord={this.guessWord}
-              wheelValue={this.props.wheelValue}
-              gameId={this.props.gameId}
-              puzzle={this.props.puzzle} 
-              values={this.state}
-              currentPlayer={this.props.currentPlayer}
-              playerId={this.props.playerId}
-              score={this.props.score}
-              players={this.props.players}
-              turn={this.props.turn}
-              />
-            <GameScreen
-              options={options}
-              baseSize={200}
-              onComplete={this.onComplete}
-            /></div>
+    
               
                 
   }
@@ -128,6 +160,6 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = {newGame,checkWord,guessPuzzle,
-                            nextWord,loadGame,saveWheelValue,loadGames}
+                            nextWord,loadGame,saveWheelValue,loadGames,bankRupt}
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameScreenContainer)
