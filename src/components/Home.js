@@ -20,8 +20,11 @@ class Home extends React.Component {
     this.source.onmessage = this.props.setGames
   }
   onSubmit = (event) => {
+    const { value } = event.target
+    const { id, name } = this.props.player
     event.preventDefault()
-    this.props.updatePlayer(this.props.player.id, event.target.value)
+    this.props.updatePlayer(id, value)
+    this.props.history.push(`/game/${value}/${name}`)
   }
 
   render() {
