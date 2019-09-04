@@ -18,7 +18,6 @@ export const createPlayer = (name) => (dispatch) => {
   }
   request
     .post(`${baseUrl}/players`, player)
-    // .send(player)
     .then(response => {
       dispatch(playerCreated(response.body))
     })

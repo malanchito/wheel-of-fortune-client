@@ -1,17 +1,32 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal'
-import { Link } from 'react-router-dom'
 import Register from './Register'
+import { connect } from 'react-redux'
+import { userLogin } from '../actions/user'
 
-export default class Login extends Component {
+class Login extends Component {
   constructor() {
     super();
 
     this.state = {
-      modalIsOpen: false
+      modalIsOpen: false,
+      name: "",
+      password: ""
     }
   }
   
+  playerLogin = (e) => {
+    e.preventDefault()
+    const user = this.state
+    console.log(user,"login?")
+    this.props.userLogin(user.name, user.password)
+    this.setState({
+      name: "",
+      password: "",
+      modalIsOpen: false
+    })
+  }
+
   openModal = () => {
     this.setState({ modalIsOpen: true });
   }
@@ -23,7 +38,12 @@ export default class Login extends Component {
     this.setState({ modalIsOpen: false });
   }
 
+  onChange = (e) => {
+    this.setState({ [e.target.name]: e.target.value })
+  }
+
   render() {
+  if(!this.props.user.message){
     return (
       <div>
         <button onClick={this.openModal}>Login</button>
@@ -38,10 +58,22 @@ export default class Login extends Component {
           <button onClick={this.closeModal}>close</button>
           <div>Login </div>
           <form action="">
-            <input type="text" placeholder="user name" name="user" />
+            <input 
+              type="text" 
+              placeholder="user name" 
+              name="name" 
+              onChange={this.onChange}
+              value={this.name}
+            />
             <br />
-            <input type="text" placeholder="password" name="password" />
-            <button>Login</button>
+            <input 
+              type="text" 
+              placeholder="password" 
+              name="password" 
+              onChange={this.onChange}
+              value={this.password}
+            />
+            <button onClick={this.playerLogin}>Login</button>
           </form>
           <h4>Not registered yet?... click on "Register"</h4>
           {/* <Link to="/register"> <button>Register</button></Link> */}
@@ -49,6 +81,9 @@ export default class Login extends Component {
         </Modal>
       </div>
     )
+  }else{
+    return <div>{this.props.user.message}</div>
+  }
   }
 }
 
@@ -62,3 +97,13 @@ const customStyles = {
     transform: 'translate(-50%, -50%)'
   }
 };
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user
+  }
+}
+
+const mapDistatchToProps = { userLogin }
+
+export default connect(mapStateToProps, mapDistatchToProps)(Login)
