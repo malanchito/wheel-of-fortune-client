@@ -9,8 +9,7 @@ import { updatePlayer } from '../actions/player'
 
 class Home extends React.Component {
 
-  source = new EventSource('https://wheel-of-fortune-server.herokuapp.com/stream')
-  // source = new EventSource('http://localhost:5000/stream')
+  source = new EventSource('http://localhost:5000/stream')
 
   openGame = () => {
     

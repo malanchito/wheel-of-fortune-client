@@ -3,12 +3,11 @@ import request from 'superagent'
 export const GAME_FETCHED = 'GAME_FETCHED'
 export const LOAD_ALL_GAMES = 'LOAD_ALL_GAMES'
 
-const baseUrl = 'https://wheel-of-fortune-server.herokuapp.com'
-// const baseUrl = 'http://localhost:5000'
+const baseUrl = 'http://localhost:5000'
 
-const gameFetched = (game,player) => ({
+const gameFetched = (game,word,player) => ({
   type: GAME_FETCHED,
-  game,player
+  game,word,player
 })
 
 export function loadGames (event,gameId,player){
@@ -30,30 +29,28 @@ export const loadGame = (id,player) => (dispatch) => {
     .catch(console.error)
 }
 
-export const newGame = (category) => (dispatch) => {
-  request(`${baseUrl}/category/${category}`)
+export const newGame = (player) => (dispatch) => {
+  request(`${baseUrl}/words/1`)
     .then(response => {
-              const game = {
-                words:[response.body.words[0].content,response.body.words[0].clue,category],
-                wheelValue: 100,
-                guessed:['b','c','d','f','g','h',
-                'j','k','l','m','n','p','q','r','s','t','v','w','x','y','z']
-              }
-              const deleteWord = {
-                content: response.body.words[0].content
-              }
-              request
-                .delete(`${baseUrl}/word`)
-                .send(deleteWord)
-                .then(response=>{
-                  request
-                    .post(`${baseUrl}/game`)
-                    .send(game)
-                    .then(response => {dispatch(gameFetched(response.body))
-                      })
-                    .catch(console.error)
-                  })
-                .catch(console.error)
+      const words = response.body
+      const word = words[Math.random*words.length]
+      const wordLetters = word.puzzle.split("")
+      const guessed = wordLetters.map(letter => letter === " " || "'" ? letter : '□')
+      const game = {
+        consonants: ['b','c','d','f','g','h',
+        'j','k','l','m','n','p','q','r','s','t','v','w','x','y','z'],
+        vowels: ['a','e','i','o','u'],
+        wordId: word.id,
+        guessed: guessed,
+        round: 1,
+        finished: false
+      }
+      request
+        .post(`${baseUrl}/game`)
+        .send(game)
+        .then(response => {dispatch(gameFetched(response.body,player))
+        })
+        .catch(console.error)
     })
     .catch(console.error) 
 }
