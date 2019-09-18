@@ -1,124 +1,38 @@
 import React from 'react'
-import EventsListContainer from './EventsListContainer'
-import EventDetailsContainer from './EventDetailsContainer'
-import LoginFormContainer from './LoginFormContainer'
-import SignUpFormContainer from './SignupFormContainer'
-import TicketDetailsContainer from './TicketDetailsContainer'
 import {Switch, Route} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {withRouter} from 'react-router'
-import CreateTicketFormContainer from './CreateTicketFormContainer';
-import AddCommentFormContainer from './AddCommentFormContainer';
-import CreateEventFormContainer from './CreateEventFormContainer';
+import Register from './Register';
+import Login from './Login';
+import GamesListContainer from './GamesListContainer';
 
 function Routes(props) {
-    //When the login form is used it sets the title depending on the component visited 
-    const loginMessages = [
-        "You need to log in to create an event",
-        "You need to log in to add a ticket",
-        "You need to log in to add a comment"
-    ]
-    //Gets the name of the authenticated user to be used as the ticket or comment author
-    const user = props.user ? props.user.user : ""
-    const jwt = props.user ? props.user.jwt : ""
-
+    const message = props.user.message
+    const user = message? message.split(" ")[2]:null
+    const jwt = props.user.jwt
     return (
         <div>
-            {!props.authenticated && 
-            //Routes used when the user is not authenticated
+            {!props.user.jwt && 
             <Switch>
                 <Route 
                     exact path='/' 
                     render= {props =>
                                 <div>
-                                    <CreateEventFormContainer
-                                    />
-                                </div>
-                            } 
-                />
-                <Route 
-                    path='/list/:id' 
-                    render= {props =>
-                                <div>
-                                    <EventsListContainer 
-                                        id={Number(props.match.params.id)}
-                                    />
-                                    <LoginFormContainer
-                                        message={loginMessages[0]}
-                                    />
-                                    <SignUpFormContainer/>
-                                </div>
-                            } 
-                />                <Route 
-                    path='/events/:id' 
-                    render= {props =>
-                                <div>
-                                    <EventDetailsContainer
-                                        id={Number(props.match.params.id)}
-                                    />
-                                    <LoginFormContainer 
-                                        message={loginMessages[1]}
-                                    />
-                                </div>
-                            } 
-                />
-                <Route 
-                    path='/tickets/:id' 
-                    render= {props =>
-                                <div>
-                                    <TicketDetailsContainer
-                                        id={Number(props.match.params.id)}
-                                    />
-                                    <LoginFormContainer 
-                                        message={loginMessages[2]}
-                                    />
+                                    <Register/>
+                                    <Login/>
                                 </div>
                             } 
                 />
             </Switch>}
-            
-            {props.authenticated && 
-            //Routes used when the user is authenticated
+            {props.user.jwt && 
             <Switch>
                 <Route 
                     exact path='/' 
                     render= {props =>
                                 <div>
-                                    <EventsListContainer />
-                                    <CreateEventFormContainer 
+                                    <GamesListContainer 
                                         jwt={jwt}
-                                    />
-                                </div>
-                            } 
-                />
-                <Route 
-                    path='/events/:id' 
-                    render= {props =>
-                                <div>
-                                    <EventDetailsContainer
-                                        id={Number(props.match.params.id)}
-                                    />
-                                    <CreateTicketFormContainer 
-                                        id={Number(props.match.params.id)}
                                         user={user}
-                                        jwt={jwt}
-                                    />
-                                </div>
-                            } 
-                />
-                <Route 
-                    path='/tickets/:id' 
-                    render= {props =>
-                                <div>
-                                    <TicketDetailsContainer
-                                        id={Number(props.match.params.id)}
-                                        user={user}
-                                        jwt={jwt}
-                                    />
-                                    <AddCommentFormContainer
-                                        id={Number(props.match.params.id)}
-                                        user={user}
-                                        jwt={jwt}
                                     />
                                 </div>
                             } 
@@ -128,8 +42,7 @@ function Routes(props) {
 }
 
 const mapStateToProps = state => ({
-  authenticated: !!state.currentUser,
-  user: state.currentUser ? state.currentUser:null
+  user: state.user
 })
 
 export default withRouter(connect(mapStateToProps)(Routes))
