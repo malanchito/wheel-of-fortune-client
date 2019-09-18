@@ -6,8 +6,6 @@ import Game from './Game';
 import GameScreen from './GameScreen';
 import { saveWheelValue } from '../actions/wheel'
 
-
-
 const options = [
   'Bankrupt',
   '100',
@@ -32,9 +30,9 @@ class GameScreenContainer extends React.Component {
     answer:''
   }
     
-  url = 'https://wheel-of-fortune-server.herokuapp.com'
-  // url = 'http://localhost:5000'
-  source = new EventSource(`${this.url}/stream`)
+  url = 'http://localhost:5000'
+  gameId = this.props.match.params.gameId
+  source = new EventSource(`${this.url}/stream/${this.gameId}`)
 
   onComplete = (value) => {
     this.props.saveWheelValue(value) 
@@ -44,8 +42,8 @@ class GameScreenContainer extends React.Component {
     const game = this.props.match.params.gameId
     const playerId = this.props.match.params.playerId
     //this.source.onmessage=event=>this.props.loadGames(event,game,playerId)
-    //this.props.newGame(4)
-    this.props.loadGame(game,playerId)
+    this.props.newGame()
+   // this.props.loadGame(game,playerId)
   }
 
   componentDidUpdate() {

@@ -21,7 +21,6 @@ class Register extends Component {
     })
     const user = this.state
     this.props.createUser(user.name, user.password)
-    console.log('USER CREATED ')
     this.setState({ modalIsOpen: false })
   }
 
@@ -43,6 +42,7 @@ class Register extends Component {
   }
 
   render() {
+    if(!this.props.user.message){
     return (
       <div>
         <button onClick={this.openModal}>Register</button>
@@ -76,6 +76,10 @@ class Register extends Component {
         </Modal>
       </div>
     )
+    }else{
+      return <div><p>Signing up done correctly</p>
+      <p>you can log in now</p></div>
+    }
   }
 }
 
